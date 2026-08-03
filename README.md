@@ -1,15 +1,15 @@
 # ADAM Issoufi
 
-**Frontend architecture & design systems.** Paris.
+**Frontend architecture, design systems and agentic development.** Paris.
 
-I work on the shared layer of a B2B SaaS platform: the component library and the application shell that fifteen product teams build their screens on.
+I work on Sophia GO, Sewan's B2B SaaS platform: the UI Kit that fifteen product teams build their screens on, cross-cutting topics, and the subjects my own team owns.
 
 ### What I do
 
-- **Own an internal design system** — 118 React/TypeScript packages published to a private registry, consumed by 15 product teams and by 47 of our 49 applications.
-- **Design composable component APIs** — table system (11 packages, 15 features including virtualisation) and filter system (13 packages), each followed by migrating every consuming screen.
+- **Own the UI Kit** — 118 React/TypeScript packages published to a private registry, consumed by 15 product teams and by 47 of our 49 applications.
+- **Design composable component APIs** — tables (11 packages, 15 features including virtualisation) and filters (13 packages), each followed by migrating every consuming screen. Each brick is versioned on its own, so a breaking change only reaches the teams that use it.
 - **Modernise toolchains without breaking anyone** — full TypeScript migration (771 files), npm → pnpm, Node 16 → 22, Jest → Vitest, Webpack → tsup, Storybook 5.3 → 9, Lerna 4 → 8, GitLab CI rebuild. Median merge request pipeline went from 17 min 24 s to 9 min, measured across 2,600 jobs.
-- **Encode conventions into tooling** — lint rules and AI agent skills so a convention applies when the code is written, not when it is reviewed.
+- **Develop with AI agents** — frontier models driven from the most advanced agentic harnesses. I continuously maintain specialised skills, rules and sub-agents, to get good code and not just code that works. Each sub-agent is tuned in model and effort to avoid high inference costs with no gain. With git worktrees, I run three or four subjects in parallel.
 
 ### Stack
 
