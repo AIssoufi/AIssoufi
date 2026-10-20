@@ -26,4 +26,4 @@ The agents, skills, rules, hooks and scripts live in my Claude Code setup (`~/.c
 
 ## Status
 
-This page describes the system as it runs today. The one part still being set up is marked as such: the efficiency metrics, with their script and their analyst agent.
+This page describes the system as it runs today.

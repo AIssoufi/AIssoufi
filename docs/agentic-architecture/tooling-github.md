@@ -17,6 +17,6 @@ The scripts read the key from the autolink (`gh api repos/<owner>/<repo>/autolin
 ## Commits and pull requests
 
 - **Conventional Commits**, such as `feat`, `fix` and `docs`, checked by commitlint (`@commitlint/config-conventional`, 18.6.1 on issoufi.fr) in a Git `commit-msg` hook, and again by the CI on every commit of a pull request. On issoufi.fr, release-please writes the changelog and the version from them.
-- **A ticket reference in every commit**: a `Refs: ISF-35` footer, which the worker's charter requires. The branch, the commits and the pull request, with `Closes #35`, all lead back to the ticket.
+- **A ticket reference in every commit**: a `Refs: ISF-35` trailer, which the worker's charter requires. It sits in the last paragraph of the message, with `Co-Authored-By`, so that `git interpret-trailers` reads it. The branch, the commits and the pull request, with `Closes #35`, all lead back to the ticket.
 - **Merges**: a master merges with `gh pr merge <pr> --merge --match-head-commit <sha> --body "Closes #<issue>"`. `--match-head-commit` refuses the merge when a commit was pushed after the master's check. The body is not the conventional title, so release-please does not list a change twice.
 - **Rulesets**: on issoufi.fr, `develop` and `main` refuse direct pushes, force pushes and deletions, so every change goes through a pull request.

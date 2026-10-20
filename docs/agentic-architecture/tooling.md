@@ -47,7 +47,7 @@ sequenceDiagram
 ```
 
 1. **Start.** The master runs `ticket.mjs start ISF-35 --agent`. The script checks the worker cap that the quota steward wrote, reads the issue with `gh`, and runs `wt switch --create ISF-35 --base origin/develop`. Worktrunk creates the worktree, and the project hooks install the dependencies and give it a port. The script sets the ticket *In Progress*, opens a cmux workspace titled `ISF-35` in the group of its status, and starts a Claude Code worker there with its charter and its environment.
-2. **Work.** The worker reads the issue, codes and tests in its worktree, on its own port. Its Conventional Commits, which commitlint checks, each end with a `Refs: ISF-35` footer.
+2. **Work.** The worker reads the issue, codes and tests in its worktree, on its own port. Its Conventional Commits, which commitlint checks, each end with a `Refs: ISF-35` trailer.
 3. **Review.** It launches two sub-agents. The visual tester takes every page at four widths in one Playwright run.
 4. **Pull request.** The worker opens it with `gh pr create` and `Closes #35`. GitHub Actions runs the checks and a preview is deployed on Cloudflare Pages. Once the checks pass, the worker sends `DONE` to its master with `cmux agent message`.
 5. **Merge.** The master reads the pull request with `gh pr checks`, `gh pr view` and `gh pr diff`, merges it with `gh pr merge --merge --match-head-commit <sha>`, and logs it with `fleet.mjs log pr.merge`.
