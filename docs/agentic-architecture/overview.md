@@ -1,6 +1,6 @@
 # Overview
 
-The owner decides. A super master coordinates one master per repository. Each master turns the problems of its repository into tickets and gives each ticket to a worker. Short-lived sub-agents review, audit and observe.
+The owner decides. A super master coordinates one master per repository. Each master turns the problems of its repository into tickets and gives each ticket to a worker. Short-lived sub-agents review, audit, observe and apply the improvements.
 
 ```mermaid
 flowchart TD
@@ -10,7 +10,8 @@ flowchart TD
   workers["Workers, one per ticket"]
   reviewers["Reviewers: conventions, visual"]
   observers["Auditor, workflow observer"]
-  config[("Skills, rules, agents, hooks")]
+  gardener["Skill gardener, one at a time"]
+  config[("Skills, rules, agents, scripts")]
   base["Base branch of each repository"]
 
   owner -->|requests, decisions| super
@@ -22,12 +23,13 @@ flowchart TD
   workers -->|launch before the pull request| reviewers
   masters -->|launch| observers
   masters -->|merge| base
-  super -->|alone edits| config
+  super -->|queues lessons and proposals| gardener
+  gardener -->|alone edits| config
 ```
 
 ## Levels
 
-- **Super master**: the only agent the owner talks to by default. It starts and restarts the masters, relays the owner's decisions, drives the Cloudflare dashboard, sets the worker capacity, and alone changes the shared skills, rules and agents. It does no ticket itself.
+- **Super master**: the only agent the owner talks to by default. It starts and restarts the masters, relays the owner's decisions, drives the Cloudflare dashboard, sets the worker capacity, and alone changes the shared skills, rules and agents, through one skill gardener at a time. It does no ticket itself.
 - **Masters**: one per repository, in its main checkout on the base branch (`develop`, or the default branch without it). A master keeps the board, prioritizes, starts workers, checks and merges their pull requests. It never implements a ticket.
 - **Workers**: one per ticket, each in its own Git worktree and terminal workspace. A worker implements, tests, has its work reviewed, opens the pull request and reports. It never merges.
 - **Sub-agents**: launched with a written brief, since they do not see the conversation. Most are read-only.

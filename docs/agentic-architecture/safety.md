@@ -8,7 +8,7 @@ Agents run in Claude Code's auto permission mode, so they work without stopping 
 - **Protected branches**: never commit or push to a base branch or to `main`: every change goes through a pull request. Where rulesets protect these branches, as on issoufi.fr, GitHub also refuses direct pushes, force pushes and deletions.
 - **Repository settings**: never change a ruleset, a deploy key or a deployment secret. They belong to the owner.
 - **Merging one's own work**: a worker never merges its pull request, removes its worktree or closes its workspace. Its master decides.
-- **Shared instructions**: only the super master edits the skills, rules and agents. Others propose.
+- **Shared instructions**: only the super master edits the skills, rules and agents, through one skill gardener at a time. Others propose.
 - **Other sessions**: never touch another session's workspace or worktree, and never stop a process by its name, since other worktrees run the same tools. A process is stopped by the PID or the port its agent noted.
 - **Pushing to a closed pull request**: a worker checks that its pull request is still open, in a guard that blocks the push, right before it.
 - **Publishing**: nothing on the owner's GitHub account beyond the issues and pull requests of the agent's repository.

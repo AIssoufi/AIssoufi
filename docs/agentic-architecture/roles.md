@@ -24,7 +24,8 @@ Launched with the Agent tool and a written brief. Each has its own model and eff
 | `visual-tester` | a worker | the change in a browser at four widths, and the regressions around it | Sonnet, medium |
 | `repo-auditor` | a master | bugs, outdated or vulnerable dependencies, missing CI, deployment, secrets, accessibility, README gaps. Read-only | Opus, high |
 | `workflow-observer` | a master, or the super master for the fleet | up to five evidenced improvements of the workflow. Read-only | Opus, high |
-| `quota-steward` | the super master | the worker capacity from the quota and the machine. Being set up | |
+| `quota-steward` | the super master, at its checkpoints | the worker capacity from the quota and the machine, and what to start or free. Read-only | Sonnet, medium |
+| `skill-gardener` | the super master, one at a time | applies the queued lessons and proposals to the skills, rules, agents and scripts, and keeps them short. The only writer of `~/.claude` | Opus, high |
 | `fleet-analyst` | the super master | the efficiency metrics of the masters. Being set up | |
 
 ## Messages
