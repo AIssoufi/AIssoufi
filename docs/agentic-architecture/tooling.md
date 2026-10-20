@@ -1,43 +1,56 @@
 # Tooling
 
-| Tool | Role in the fleet |
-| --- | --- |
-| [Claude Code](https://claude.com/claude-code) | Runs every agent: an interactive session per super master, master and worker, and sub-agents launched from them |
-| [cmux](https://github.com/manaflow-ai/cmux) | A terminal with one workspace per agent, messages between agents, and a sidebar that reads like a board |
-| [Worktrunk](https://github.com/max-sixty/worktrunk) | Creates and removes the Git worktree of each ticket, and runs hooks around it |
-| [GitHub CLI](https://cli.github.com) | Issues, the Status and Priority fields of each repository's project, pull requests, checks and merges |
-| [Cloudflare](https://www.cloudflare.com) | Hosts the projects on Pages or Workers, with a preview URL for each pull request |
-| Playwright and Chrome | Screenshots at four widths, and the checks that need interaction |
+The fleet runs on one machine: a dozen Claude Code sessions at a time, each in its own terminal workspace and, for a worker, in its own Git worktree. A few tools and scripts make that possible. The versions were read on the machine on 2026-10-20, with `--version`, or from the lockfile of [issoufi.fr](https://github.com/AIssoufi/issoufi.fr) for the project tools.
 
-## Claude Code
+| Tool | Version | Role in the fleet | Details |
+| --- | --- | --- | --- |
+| [Claude Code](https://claude.com/claude-code) | 2.1.303 | Runs every agent: an interactive session per super master, master and worker, and the sub-agents they launch | [Claude Code](tooling-claude-code.md) |
+| [cmux](https://github.com/manaflow-ai/cmux) | 0.65.2 | A terminal with one workspace per agent, messages between agents, and a sidebar that reads like a board | [cmux](tooling-cmux.md) |
+| [Worktrunk](https://github.com/max-sixty/worktrunk) (`wt`) | 0.80.0 | Creates and removes the Git worktree of each ticket, and runs hooks around it | [Worktrunk](tooling-worktrunk.md) |
+| Scripts of the setup | | Start, track and clean up the tickets, keep the journal, read the quota, measure the fleet | [Scripts](tooling-scripts.md) |
+| [GitHub CLI](https://cli.github.com) (`gh`) | 2.102.0 | Issues, project fields, pull requests, checks and merges | [GitHub](tooling-github.md) |
+| pnpm, Vite, Vitest, Playwright | 10.34.7, 8.3.4, 4.1.11, 1.64.0 | Install, build, unit tests, browser tests and screenshots | [Build, test and deploy](tooling-build-and-deploy.md) |
+| [Cloudflare](https://www.cloudflare.com) Pages and Workers | | Hosting, with a preview URL for each branch | [Build, test and deploy](tooling-build-and-deploy.md#cloudflare) |
 
-- A session is started with its charter appended to its system prompt, a name (`--name ISF-35`), an effort (`--effort high`), the auto permission mode, and its identity in its environment.
-- **Skills** in `~/.claude/skills` hold the conventions and the procedures, and load when a task matches their description. **Rules** in `~/.claude/rules` are short reminders, scoped to file paths, that point to a skill. **Agents** in `~/.claude/agents` define each sub-agent's instructions, tools, model and effort. **Hooks** run checks that need no judgment.
-- Each master schedules its own checkpoint as a recurring task every 30 minutes.
+Node.js 24.22.0 runs the scripts, Git 2.56.0 holds the worktrees, and jq 1.7.1 queries the session transcripts.
 
-## cmux
+## How they fit together
 
-- `cmux agent message <workspace> --from <name> "<text>"` delivers a message into another agent's session.
-- `ticket.mjs sync` titles each workspace after its branch and files it in the group of its ticket status.
-- Two zsh hooks resume a Claude session after a cmux restart, with the options it was launched with, and keep a workspace titled after its branch.
-- The owner can open any workspace and talk to its agent directly.
+One ticket, `ISF-35`, from its start to its merge:
 
-## Worktrunk
+```mermaid
+sequenceDiagram
+  participant M as Master (Claude Code)
+  participant T as ticket.mjs
+  participant WT as Worktrunk
+  participant C as cmux
+  participant W as Worker (Claude Code)
+  participant G as GitHub
+  participant CF as Cloudflare Pages
+  M->>T: start ISF-35 --agent
+  T->>T: check the worker cap in capacity.json
+  T->>G: read the issue and the ticket key (gh)
+  T->>WT: wt switch --create ISF-35
+  WT->>WT: project hooks, pnpm install and a port
+  T->>G: set the status In Progress
+  T->>C: open the workspace ISF-35 in its status group
+  C->>W: claude --name ISF-35 with its charter
+  W->>W: code, Vitest, Playwright, commits with Refs ISF-35
+  W->>G: pull request that closes the issue
+  G->>CF: CI deploys a preview of the branch
+  W->>M: DONE, through cmux agent message
+  M->>G: check, then merge (gh)
+  M->>T: cleanup
+  T->>C: type /exit in the worker's terminal
+  T->>WT: wt remove ISF-35
+  WT->>C: post-remove hook closes the workspace
+```
 
-- `wt switch --create <ref> --base origin/<base>` creates a worktree next to the repository; `wt remove` deletes it with its merged branch.
-- User hooks open the cmux workspace after a start and close it after a removal; project hooks prepare the worktree, for example by installing its dependencies and giving it its own port for the dev server.
+1. **Start.** The master runs `ticket.mjs start ISF-35 --agent`. The script checks the worker cap that the quota steward wrote, reads the issue with `gh`, and runs `wt switch --create ISF-35 --base origin/develop`. Worktrunk creates the worktree, and the project hooks install the dependencies and give it a port. The script sets the ticket *In Progress*, opens a cmux workspace titled `ISF-35` in the group of its status, and starts a Claude Code worker there with its charter and its environment.
+2. **Work.** The worker reads the issue, codes and tests in its worktree, on its own port. Its Conventional Commits, which commitlint checks, each end with a `Refs: ISF-35` trailer.
+3. **Review.** It launches two sub-agents. The visual tester takes every page at four widths in one Playwright run.
+4. **Pull request.** The worker opens it with `gh pr create` and `Closes #35`. GitHub Actions runs the checks and a preview is deployed on Cloudflare Pages. Once the checks pass, the worker sends `DONE` to its master with `cmux agent message`.
+5. **Merge.** The master reads the pull request with `gh pr checks`, `gh pr view` and `gh pr diff`, merges it with `gh pr merge --merge --match-head-commit <sha>`, and logs it with `fleet.mjs log pr.merge`.
+6. **Cleanup.** `ticket.mjs cleanup` types `/exit` into the worker's terminal through cmux and waits for the session to end. It then runs `wt remove`, whose hook closes the workspace, and refiles the sidebar.
 
-## Scripts of the setup
-
-| Script | Does |
-| --- | --- |
-| `ticket.mjs` | `list`, `start` (with `--agent`), `status`, `sync`, `cleanup` and `key` of the tickets |
-| `fleet.mjs` | the registry, the journal, and `start-master`: see [Traceability](traceability.md) |
-| `usage.mjs` | the quota steward's reading: see [Capacity and quota](capacity-and-quota.md) |
-| `screenshots.mjs` | every route at every width in one Playwright run, for the visual tester |
-
-They are Node.js scripts that keep their logic in pure helpers, tested with `node --test`, and call `git`, `gh`, `wt` and `cmux` from thin I/O modules.
-
-## GitHub
-
-Each repository has an autolink that turns its ticket key (`ISF-35`) into a link to the issue, and a GitHub Project whose Status field drives the cmux board. Merges use a merge commit whose body is not the pull request's conventional title, so a changelog tool does not list a change twice.
+Each tool does one part, and a script or a hook hands over to the next one. The start and the cleanup are scripts rather than steps an agent types one by one, so they happen the same way for each ticket, whichever master runs them.

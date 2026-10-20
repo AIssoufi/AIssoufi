@@ -42,4 +42,4 @@ Once a day, the gardener also makes a hygiene pass: it measures the instructions
 
 ## Being set up: metrics
 
-A metrics script and a `fleet-analyst` agent are being set up to measure each master's efficiency from the journal, the transcripts and GitHub, so that the observer and the owner work from numbers rather than impressions.
+A metrics script, `metrics.mjs`, and a `fleet-analyst` agent measure each master's efficiency from the journal, the transcripts and GitHub, so that the observer and the owner work from numbers rather than impressions.

@@ -23,4 +23,4 @@ The master merges nothing on a worker's word. It reads the pull request on GitHu
 
 ## Guardrails in the code
 
-A convention that matters is also enforced by the repository, so an agent that misses it fails the CI rather than the review: lint rules, type checks, tests of the design tokens, browser tests of the layout and accessibility. Each project's page lists its own, for example [issoufi.fr](https://github.com/AIssoufi/issoufi.fr/blob/develop/docs/ai-workflow.md#guardrails-in-the-repository).
+A convention that matters is also enforced by the repository, so an agent that misses it fails the CI rather than the review: lint rules, type checks, tests of the design tokens, browser tests of the layout and accessibility. Each project's page lists its own, for example [issoufi.fr](https://github.com/AIssoufi/issoufi.fr/blob/develop/docs/ai-workflow/README.md#guardrails-in-the-repository).

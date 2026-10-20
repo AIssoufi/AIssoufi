@@ -28,6 +28,6 @@ Every master and worker registers at its start. Masters log each action they tak
 
 ## Other traces
 
-- **On GitHub**: the branch, the commit footers (`Refs: ISF-35`) and the pull request (`Closes #35`) all carry the ticket reference, which an autolink turns into a link.
+- **On GitHub**: the branch, the commit trailers (`Refs: ISF-35`) and the pull request (`Closes #35`) all carry the ticket reference, which an autolink turns into a link.
 - **Per master**: a handover file, read at its start, and a short state file it keeps current with its priorities, its running workers, the pull requests waiting and why, and its next steps. It survives a compaction, and the super master reads it.
 - **Lessons**: a journal of mistakes and their preventions, see [Continuous improvement](continuous-improvement.md).
