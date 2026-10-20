@@ -12,7 +12,7 @@ Each is an interactive Claude Code session in its own cmux workspace, with its c
 
 A worker's effort follows what its ticket asks, not its size in lines: `xhigh` for architecture, build, CI or deployment; `high` for a feature or a fix a visitor sees; `medium` for a mechanical change, docs or a dependency update. A worker that finds its ticket harder says so, and its master restarts it with more effort in the same worktree.
 
-A master runs with a smaller context window than a worker (compaction at 200,000 tokens). It coordinates rather than reads code, and its state file holds what it must not forget, so a smaller window keeps each of its many turns cheaper without losing anything.
+A master runs with a smaller context window than a worker (compaction at 150,000 tokens, against 200,000 for a worker). It coordinates rather than reads code, and its state file holds what it must not forget, so a smaller window keeps each of its many turns cheaper without losing anything.
 
 ## Sub-agents
 

@@ -20,7 +20,7 @@ sequenceDiagram
 ## Steps
 
 1. **Ticket.** A request of the owner, a worker's `FINDING` or an auditor's finding becomes a GitHub issue, in English, after at least two duplicate searches. It goes into the repository's GitHub Project with a status and a priority, from P0 (a broken build, a site down, an exposed secret) to P3 (polish). A ticket that unblocks others, then the cheapest, starts first.
-2. **Start.** `ticket.mjs start <ref> --agent` creates a worktree next to the repository (`repo.ISF-35`), on a branch named after the ticket reference and taken from the base branch, sets the ticket *In Progress*, opens a cmux workspace and launches a worker in it.
+2. **Start.** `ticket.mjs start <ref> --agent` creates a worktree in a folder that Spotlight skips (`worktrees.noindex/repo.ISF-35`), on a branch named after the ticket reference and taken from the base branch, sets the ticket *In Progress*, opens a cmux workspace and launches a worker in it.
 3. **Implementation.** The worker reads the issue, restates its acceptance criteria, and asks rather than guesses. It makes atomic Conventional Commits with a `Refs: ISF-35` footer, after the project's checks pass on the whole tree. It rebases on the base branch, never merges it in, so the history stays linear.
 4. **Review** by two independent agents: see [Reviews and quality](reviews-and-quality.md).
 5. **Pull request** against the base branch, with `Closes #35`, a test plan and the review verdict. Every figure in it is copied from a command run on the final state. The worker waits for the CI, fixes it, checks that the base has not moved, then sends `DONE`.
