@@ -2,7 +2,7 @@
 
 How a fleet of [Claude Code](https://claude.com/claude-code) agents plans, implements, reviews and ships the work on my repositories.
 
-The agents, skills, rules, hooks and scripts live in my Claude Code setup (`~/.claude`), which is not public. The repositories hold their work: issues, pull requests, commits, and a short page per project on how agents work on it, such as [issoufi.fr: AI workflow](https://github.com/AIssoufi/issoufi.fr/blob/develop/docs/ai-workflow.md).
+The agents, skills, rules, hooks and scripts live in my Claude Code setup (`~/.claude`), which is not public. The repositories hold their work: issues, pull requests, commits, and a short page per project on how agents work on it, such as [issoufi.fr: AI workflow](https://github.com/AIssoufi/issoufi.fr/blob/develop/docs/ai-workflow/README.md).
 
 ## Pages
 
