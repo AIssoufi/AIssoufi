@@ -16,7 +16,13 @@ The agents, skills, rules, hooks and scripts live in my Claude Code setup (`~/.c
 | [Capacity and quota](capacity-and-quota.md) | How many workers run at once, and how the subscription quota is spent |
 | [Continuous improvement](continuous-improvement.md) | Lessons, skills and rules, the workflow observer and the metrics |
 | [Safety](safety.md) | What agents never do |
-| [Tooling](tooling.md) | Claude Code, cmux, Worktrunk, the GitHub CLI and Cloudflare |
+| [Tooling](tooling.md) | The tools of the fleet, their versions, and how they combine on one ticket |
+| [Tooling: Claude Code](tooling-claude-code.md) | How a session starts, the compaction window per role, skills, rules, sub-agents and hooks |
+| [Tooling: cmux](tooling-cmux.md) | One workspace per agent, messages, the sidebar board, driving a terminal, resuming after a restart |
+| [Tooling: Worktrunk](tooling-worktrunk.md) | One worktree per ticket, the user config and the project hooks |
+| [Tooling: scripts](tooling-scripts.md) | `ticket.mjs`, `fleet.mjs`, `usage.mjs`, `metrics.mjs` and `screenshots.mjs` |
+| [Tooling: GitHub](tooling-github.md) | Projects and priorities, autolinks for ticket keys, commits and merges |
+| [Tooling: build, test and deploy](tooling-build-and-deploy.md) | pnpm, Vite, Vitest, Playwright, GitHub Actions and Cloudflare |
 
 ## Status
 
